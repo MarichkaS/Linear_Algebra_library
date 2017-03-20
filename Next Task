@@ -1,0 +1,14 @@
+
+До понеділка реалізувати:
+
+class matrix;
+class vector;
+
+matrix operator+(const matrix&, const matrix&);
+matrix operator+(const double&, const matrix&);
+matrix operator+(const matrix&, const double&);
+
+matrix& operator+=(const matrix&);
+matrix& operator+=(const double&);
+
+vector operator+(const vector&, const vector&);
