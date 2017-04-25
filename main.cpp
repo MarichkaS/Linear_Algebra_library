@@ -1,6 +1,15 @@
 #include <iostream>
+#include "Vector.h"
+
+using namespace std;
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+
+    Vector<double> b(3);
+    //double b1[3]  = {1.0, 2.0, 3.0};
+    //b = b1;
+    //Vector c(4) = a+b;
+
+
     return 0;
 }
