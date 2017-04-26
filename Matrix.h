@@ -49,7 +49,6 @@ private:
 
         }
 
-
         void bf() const {}
 
 
@@ -121,8 +120,14 @@ public:
         return matr_data(i, j);
 
     }
-};
 
+
+    friend std::ostream& operator<<(std::ostream& out, const Matrix& val){
+        out << val(1, 1);
+        return out;
+    }
+
+};
 
 
 
