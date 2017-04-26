@@ -108,6 +108,18 @@ public:
         return vec_data(i);
 
     }
+
+    friend std::ostream& operator<<(std::ostream& out, const Vector& val){
+        string c = "";
+        for (int i = 0; i < val.vec_data.cols; i ++)
+        {
+            c += val(i);
+            c += " ";
+        }
+        out << c;
+        return out;
+    }
+
 };
 
 

@@ -7,7 +7,8 @@
 
 #include <iostream>
 #include <stdexcept>
-
+#include <string>
+using namespace std;
 template <class T>
 class Matrix {
 
@@ -123,7 +124,15 @@ public:
 
 
     friend std::ostream& operator<<(std::ostream& out, const Matrix& val){
-        out << val(1, 1);
+        string c = "";
+        for (int i = 0; i < val.matr_data.cols; i ++)
+        {
+            for (int j = 0; j< val.matr_data.rows; j ++){
+                c+= val(i, j);
+                c += " ";
+            }
+        }
+        out << c;
         return out;
     }
 

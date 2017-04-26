@@ -11,14 +11,15 @@ int main() {
     //A = {1,2,3,4};
     A = a;
     cout << A(1,1)<< endl;
-    cout << A;
+    cout << A << endl;
     //Matrix<int> B(2, 2);
     //B = {4, 3, 2, 1};
     //A = B;
     //cout << A(1,1) << endl;
-    //Vector<double> b(3);
-    //b = {1.0, 2.0, 3.0};
-    //cout << b(3) << endl;
+    double b[] = {1.0, 2.0, 3.0};
+    Vector<double> B(3);
+    B = b;
+    //cout << B << endl;    Doesn't work right now, will be fixed soon
 
 
 
