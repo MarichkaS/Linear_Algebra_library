@@ -85,13 +85,11 @@ public:
             matr_data.data[i - begin(ilst)] = *i;
         }
     }
-    size_t rows()
-    {
+    size_t rows()const {
         return matr_data.rows;
     }
 
-    size_t cols()
-    {
+    size_t cols() const {
         return matr_data.cols;
     }
 
@@ -136,6 +134,171 @@ public:
         return out;
     }
 
+
+    Matrix operator*(const Matrix &other) const {
+        const Matrix &self = *this;
+        Matrix<int> res(this->rows(), this->cols());
+
+        for (size_t i = 0; i < this->rows(); i++) {
+            for (size_t k = 0; k < this->cols(); k++) {
+                for (size_t j = 0; j < other.rows(); j++) {
+                    res(i, k) += self(i, j) * other(j, k);
+                }
+            }
+        }
+        return res;
+    }
+
+    Matrix operator+(const Matrix &other) const
+    {
+        const Matrix &self = *this;
+        Matrix<int> res(this->rows(), this->cols());
+
+        for (size_t i = 0; i < this->rows(); i++) {
+            for (size_t j = 0; j < this->cols(); j++) {
+                res(i, j) = self(i, j) + other(i, j);
+            }
+        }
+
+        return res;
+
+    }
+
+    Matrix operator-(const Matrix &other) const
+    {
+        const Matrix &self = *this;
+        Matrix<int> res(this->rows(), this->cols());
+
+        for (size_t i = 0; i < this->rows(); i++) {
+            for (size_t j = 0; j < this->cols(); j++) {
+                res(i, j) = self(i, j) - other(i, j);
+            }
+        }
+
+        return res;
+    }
+
+    Matrix operator-() const
+    {
+        const Matrix &self = *this;
+        Matrix<int> res(this->rows(), this->cols());
+
+        for (size_t i = 0; i < this->rows(); i++) {
+            for (size_t j = 0; j < this->cols(); j++) {
+                res(i, j) = -self(i, j);
+            }
+        }
+
+        return res;
+    }
+
+    void operator+=(const Matrix &other)
+    {
+        Matrix &self = *this;
+        self = self + other;
+    }
+
+    void operator-=(const Matrix &other)
+    {
+        Matrix &self = *this;
+        self = self - other;
+    }
+
+    void operator*=(const Matrix &other)
+    {
+        Matrix &self = *this;
+        self = self * other;
+    }
+
+    Matrix operator*(double scalar) const
+    {
+        const Matrix &self = *this;
+        Matrix<int> res(this->rows(), this->cols());
+
+        for (size_t i = 0; i < this->rows(); i++) {
+            for (size_t j = 0; j < this->cols(); j++) {
+                res(i, j) = self(i, j) * scalar;
+            }
+        }
+
+        return res;
+    }
+
+    Matrix operator+(double scalar) const
+    {
+        const Matrix &self = *this;
+        Matrix<int> res(this->rows(), this->cols());
+
+        for (size_t i = 0; i < this->rows(); i++) {
+            for (size_t j = 0; j < this->cols(); j++) {
+                res(i, j) = self(i, j) + scalar;
+            }
+        }
+
+        return res;
+    }
+
+    inline Matrix operator-(double scalar) const
+    {
+        return (*this) + (-1*scalar);
+    }
+
+    void operator*=(double scalar)
+    {
+        Matrix &self = *this;
+
+        for (size_t i = 0; i < this->rows(); i++) {
+            for (size_t j = 0; j < this->cols(); j++) {
+                self(i, j) = self(i, j) * scalar;
+            }
+        }
+    }
+
+
+    inline void operator+=(double scalar)
+    {
+        *this = (*this) + scalar;
+    }
+
+//    inline void operator-=(double scalar)
+//    {
+//        *this = (*this) - scalar;
+//    }
+
+//    const Matrix Matrix::operator * (const Matrix& an) const
+//    {
+//        Matrix<T> temp = an;
+//        T sum_elems;
+//        for( int i = 0; i < this->rows() - 1; ++i)
+//        {
+//            for(int j = 0; j < an.cols() - 1; ++j)
+//            {
+//                sum_elems = 0;
+//                for( int k = 0; k < an.rows() - 1; ++k)
+//                {
+//                    sum_elems += matr_data.data[i][k] * an[k][j];
+//                }
+//
+//                temp.matr_data[i][j] = sum_elems;
+//            }
+//        }
+//        return temp;
+//
+//    }
+//    inline Matrix& operator+(Matrix m) {
+//        // first, make sure matrices can be added. if not, return original matrix
+//        if (rows() != m.rows() || cols() != m.cols()) {
+//            cerr << "Matrix sizes do not match. Mission impossible.";
+//            return (*this);
+//        }
+//        Matrix new_mat(rows(), cols());
+//        for (int i = 0; i < rows(); i++) {
+//            for (int j = 0; j < cols(); j++) {
+//                new_mat.matrToArr()[i][j] = matrToArr()[i][j] + m.matrToArr()[i][j];
+//            }
+//        }
+//        return new_mat;
+//    }
 };
 
 
