@@ -126,7 +126,7 @@ public:
         for (int i = 0; i < val.matr_data.cols; i ++)
         {
             for (int j = 0; j< val.matr_data.rows; j ++){
-                c+= val(i, j);
+                c+= std::to_string(val(i, j));
                 c += " ";
             }
         }

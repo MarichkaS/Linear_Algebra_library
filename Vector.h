@@ -113,7 +113,7 @@ public:
         string c = "";
         for (int i = 0; i < val.vec_data.cols; i ++)
         {
-            c += val(i);
+            c += std::to_string(val(i));
             c += " ";
         }
         out << c;
