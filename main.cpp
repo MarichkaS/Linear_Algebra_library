@@ -19,15 +19,18 @@ int main() {
     Matrix<int> C = A*B;
 
     cout << C(0,0);
-    //Matrix<int> B(2, 2);
-    //B = {4, 3, 2, 1};
-    //A = B;
-    //cout << A(1,1) << endl;
-//    double b[] = {1.0, 2.0, 3.0};
-//    Vector<double> B(3);
-//    B = b;
-    //cout << B << endl;    Doesn't work right now, will be fixed soon
 
+    Vector<double> V1(3);
+    Vector<double> V2(3);
+    double v1[] = {2, 0, 0};
+    double v2[] = {1.0, 2.0, 3.0};
+    V1 = v1;
+    V2 = v2;
+    double bb = a[1];
+    Vector<double> C(3);
+    cout << V1 * V2 << endl;
+    cout << v1 + V2 << endl;
+    cout << v1 - V2 << endl;
 
 
 
