@@ -134,9 +134,6 @@ public:
         for (size_t i = 0; i < this->cols(); i++) {
             res(i) = self(i) + other(i);
         }
-        for(int i = 0; i < res.cols(); i++){
-            std::cout << res(i) << std::endl;
-        }
         return res;
     }
 
@@ -145,9 +142,6 @@ public:
         Vector<double> res(this->cols());
         for (size_t i = 0; i < this->cols(); i++) {
             res(i) = self(i) - other(i);
-        }
-        for(int i = 0; i < res.cols(); i++){
-            std::cout << res(i) << std::endl;
         }
         return res;
     }
