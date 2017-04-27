@@ -1,10 +1,9 @@
-
-
 #ifndef LINEAR_ALGEBRA_LIBRARY_VECTOR_H
 #define LINEAR_ALGEBRA_LIBRARY_VECTOR_H
 
 #include <iostream>
 #include <stdexcept>
+#include <string>
 
 template <class T>
 class Vector {
@@ -101,7 +100,7 @@ public:
 
     }
 
-    inline const T& operator()(size_t i, size_t j) const {
+    inline const T& operator()(size_t i) const {
         if (i >= vec_data.cols || i < 0) {
             throw std::out_of_range ("Vector index out of range");
         }
@@ -110,8 +109,8 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& out, const Vector& val){
-        string c = "";
-        for (int i = 0; i < val.vec_data.cols; i ++)
+        std::string c = "";
+        for (int i = 0; i < val.vec_data.cols; i++)
         {
             c += std::to_string(val(i));
             c += " ";
@@ -120,13 +119,39 @@ public:
         return out;
     }
 
+    double operator*(const Vector &other){
+        const Vector &self = *this;
+        double result = 0;
+        for (size_t i = 0; i < this->cols(); i++) {
+            result += self(i) * other(i);
+        }
+        return result;
+    }
+
+    Vector operator+(const Vector &other) {
+        const Vector &self = *this;
+        Vector<double> res(this->cols());
+        for (size_t i = 0; i < this->cols(); i++) {
+            res(i) = self(i) + other(i);
+        }
+        for(int i = 0; i < res.cols(); i++){
+            std::cout << res(i) << std::endl;
+        }
+        return res;
+    }
+
+    Vector operator-(const Vector &other) {
+        const Vector &self = *this;
+        Vector<double> res(this->cols());
+        for (size_t i = 0; i < this->cols(); i++) {
+            res(i) = self(i) - other(i);
+        }
+        for(int i = 0; i < res.cols(); i++){
+            std::cout << res(i) << std::endl;
+        }
+        return res;
+    }
 };
-
-
-
-
-
-
 
 //inline Vector operator+(Vector x, const  Vector& y);
 
