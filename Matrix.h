@@ -45,18 +45,19 @@ private:
 public:
 
     Matrix(size_t r, size_t c) : matr_data(c, r) {}
-    void operator = (T arr[])
+    void operator = (T* arr[])
     {
-       // std::copy(std::begin(matr_data.data), std::end(matr_data.data), std::begin(arr));
+
         //std::cout << (sizeof(arr) / sizeof(arr[0])) << std::endl;
         if ((sizeof(arr) / sizeof(arr[0]) ) > matr_data.rows * matr_data.cols) //TODO:FIX
         {
             throw std::out_of_range("Too big arr to initialize matrix with");
         }
-        for (int i = 0; i < matr_data.cols * matr_data.rows; i ++)
-        {
-            matr_data.data[i] = arr[i];
-        }
+//        for (int i = 0; i < matr_data.cols * matr_data.rows; i ++)
+//        {
+//            matr_data.data[i] = arr[i];
+//        }
+        std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), arr);
 
     }
     void operator = (std::initializer_list<T> ilst)
@@ -65,13 +66,20 @@ public:
         {
             throw std::out_of_range("Too big lst to initialize matrix with");
         }
-        typename std::initializer_list<T>::iterator i;
-        for (i = begin(ilst); i != end(ilst); i++)
+        //typename std::initializer_list<T>::iterator i;
+        for (auto i = begin(ilst); i != end(ilst); i++)
         {
             matr_data.data[i - begin(ilst)] = *i;
         }
+        //std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), begin(ilst));
     }
-    size_t rows()const {
+    Matrix(Matrix& other)
+    {
+        matr_data = MatrixMemory(other.matr_data.rows, other.matr_data.cols);
+        copy(other.matr_data.data, other.matr_data.data + (matr_data.rows * matr_data.cols), matr_data.data);
+    }
+
+    size_t rows() const {
         return matr_data.rows;
     }
 
@@ -84,10 +92,11 @@ public:
         return matr_data.data;
     }
 
-    void operator = (Matrix<T> m)
+    Matrix& operator = (const Matrix<T>& other)
     {
-        matr_data = MatrixMemory(m.rows(), m.cols());
-        *this = m.matrToArr();
+        matr_data = MatrixMemory(other.matr_data.rows, other.matr_data.cols);
+        copy(other.matr_data.data, other.matr_data.data + (matr_data.rows * matr_data.cols), matr_data.data);
+        return *this;
     }
 
     inline T& operator()(size_t i, size_t j) {
