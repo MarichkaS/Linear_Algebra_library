@@ -10,43 +10,34 @@ class Vector {
 
 private:
 
-    struct VectorMemory {
-
+    struct VectorMemory
+    {
         T *data;
-
         size_t cols;
 
-        VectorMemory(size_t c) : cols(c) {
-
+        VectorMemory(size_t c) : cols(c)
+        {
             data = new T[cols];
-
         }
 
 
         ~VectorMemory() // RAII
-
         {
-
             delete[] data;
-
         }
 
 
-        inline T &operator()(size_t i) {
-
+        inline T &operator()(size_t i)
+        {
             return *(data + i);
-
         }
 
-        inline const T &operator()(size_t i) const {
-
+        inline const T &operator()(size_t i) const
+        {
             return *(data + i);
-
         }
-
 
         void bf() const {}
-
 
     } vec_data;
 

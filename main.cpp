@@ -27,10 +27,10 @@ int main() {
     V1 = v1;
     V2 = v2;
     double bb = a[1];
-    Vector<double> C(3);
-    cout << V1 * V2 << endl;
-    cout << v1 + V2 << endl;
-    cout << v1 - V2 << endl;
+//    Vector<double> C(3);
+//    cout << V1 * V2 << endl;
+//    cout << v1 + V2 << endl;
+//    cout << v1 - V2 << endl;
 
 
 

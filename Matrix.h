@@ -15,50 +15,36 @@ class Matrix {
 private:
 
     struct MatrixMemory {
-
         T *data;
-
         size_t cols, rows;
 
         MatrixMemory(size_t r, size_t c) :
-
-                cols(c), rows(r) {
-
+                cols(c), rows(r)
+        {
             data = new T[cols * rows];
-
         }
-
 
         ~MatrixMemory() // RAII
-
         {
-
             delete[] data;
-
         }
-
 
         inline T &operator()(size_t i, size_t j) {
-
             return *(data + i * cols + j);
-
         }
 
-        inline const T &operator()(size_t i, size_t j) const {
-
+        inline const T &operator()(size_t i, size_t j) const
+        {
             return *(data + i * cols + j);
-
         }
 
         void bf() const {}
-
-
-    } matr_data;
+    }
+            matr_data;
 
 public:
 
     Matrix(size_t r, size_t c) : matr_data(c, r) {}
-
     void operator = (T arr[])
     {
        // std::copy(std::begin(matr_data.data), std::end(matr_data.data), std::begin(arr));
@@ -140,8 +126,11 @@ public:
         Matrix<int> res(this->rows(), this->cols());
 
         for (size_t i = 0; i < this->rows(); i++) {
+            cout << "1" <<endl;
             for (size_t k = 0; k < this->cols(); k++) {
+                cout <<"2"<<endl;
                 for (size_t j = 0; j < other.rows(); j++) {
+                    cout << other.rows() << "qdq";
                     res(i, k) += self(i, j) * other(j, k);
                 }
             }
