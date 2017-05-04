@@ -39,8 +39,7 @@ private:
         }
 
         void bf() const {}
-    }
-            matr_data;
+    } matr_data;
 
 public:
 
@@ -49,13 +48,9 @@ public:
     {
 
         //std::cout << (sizeof(arr) / sizeof(arr[0])) << std::endl;
-        if ((sizeof(arr) / sizeof(arr[0]) ) > matr_data.rows * matr_data.cols) //TODO:FIX
-        {
-            throw std::out_of_range("Too big arr to initialize matrix with");
-        }
-//        for (int i = 0; i < matr_data.cols * matr_data.rows; i ++)
+//        if ((sizeof(arr) / sizeof(arr[0]) ) > matr_data.rows * matr_data.cols) //TODO:FIX
 //        {
-//            matr_data.data[i] = arr[i];
+//            throw std::out_of_range("Too big arr to initialize matrix with");
 //        }
         std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), arr);
 
@@ -66,16 +61,15 @@ public:
         {
             throw std::out_of_range("Too big lst to initialize matrix with");
         }
-        //typename std::initializer_list<T>::iterator i;
+
         for (auto i = begin(ilst); i != end(ilst); i++)
         {
             matr_data.data[i - begin(ilst)] = *i;
         }
         //std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), begin(ilst));
     }
-    Matrix(Matrix& other)
+    Matrix(const Matrix<T>& other) : matr_data(other.rows(), other.cols())
     {
-        matr_data = MatrixMemory(other.matr_data.rows, other.matr_data.cols);
         copy(other.matr_data.data, other.matr_data.data + (matr_data.rows * matr_data.cols), matr_data.data);
     }
 
@@ -90,6 +84,10 @@ public:
     T* const matrToArr()
     {
         return matr_data.data;
+    }
+    void resize(size_t rows, size_t cols) {
+        matr_data.rows = rows;
+        matr_data.cols = cols;
     }
 
     Matrix& operator = (const Matrix<T>& other)
@@ -124,6 +122,7 @@ public:
                 c+= std::to_string(val(i, j));
                 c += " ";
             }
+            c +='\n';
         }
         out << c;
         return out;

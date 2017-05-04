@@ -12,11 +12,15 @@ int main() {
     Matrix<int> B(2, 2);
 //    cout << A = B << endl;
     A = {1,2,3,4};
+    B = {5,7,1,8};
+    cout << B << endl;
     //A = a;
     B = A;
+    A = {3,7, 4, 1};
     cout << A << endl;
     cout << B << endl;
-//    cout << A << endl;
+    Matrix<int> C(A);
+    cout << C << endl;
 //    cout << A.rows();
 //    Matrix<int> C = A*B;
 //
