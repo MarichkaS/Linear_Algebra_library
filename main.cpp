@@ -6,33 +6,49 @@ using namespace std;
 
 int main() {
 
-    int a[] = {1,2,3,4};
-    Matrix<int> A(2, 2);
-    int b[] = {1,2,3,4};
+    Matrix<int> A = {1, 2, 3, 4};
     Matrix<int> B(2, 2);
-//    cout << A = B << endl;
-    //A = {1,2,3,4};
-    A = a;
-    cout << A(1,1)<< endl;
+    B = {5, 7, 1, 8};
+    Matrix<int> D(2, 2);
     cout << A << endl;
-    cout << A.rows();
-    Matrix<int> C = A*B;
+    B += A;
+    cout << "Result of adding 2 matrices with +=:" << endl;
+    cout << B << endl;
 
-    cout << C(0,0);
+    Matrix<int> C(2, 2);
+    C = B + A;
+    cout << "Result of adding 2 matrices with +:" << endl;
+    cout << C << endl;
 
-    Vector<double> V1(3);
-    Vector<double> V2(3);
-    double v1[] = {2, 0, 0};
-    double v2[] = {1.0, 2.0, 3.0};
-    V1 = v1;
-    V2 = v2;
-    double bb = a[1];
-//    Vector<double> C(3);
-//    cout << V1 * V2 << endl;
-//    cout << v1 + V2 << endl;
-//    cout << v1 - V2 << endl;
+    C = B + 2;
+    cout << "Result of adding a scalar to matrix with +:" << endl;
+    cout << C << endl;
+
+    C = 2 + B;
+    cout << "Result of adding a scalar to matrix with +:" << endl;
+    cout << C << endl;
 
 
+    D = B - A;
+    cout << "Result of adding 2 matrices with -:"<< endl;
+    cout << D << endl;
+
+
+    B-= A;
+    cout << "Result of -= for 2 matr.: "<< endl;
+    cout << B << endl;
+
+    D = B * A;
+    cout << "Result of multiplying 2 matrices with *"<< endl;
+    cout << D << endl;
+
+    D = B * 2;
+    cout << "Result of multiplying matrix and scalar with *"<< endl;
+    cout << D << endl;
+
+    D = 2 * B;
+    cout << "Result of multiplying scalar and matrix with *"<< endl;
+    cout << D << endl;
 
     return 0;
 }
