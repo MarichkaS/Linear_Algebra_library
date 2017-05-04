@@ -45,13 +45,18 @@ public:
 
     Vector(size_t c) : vec_data(c) {}
 
-    void operator = (T arr[])
+    Vector(const Vector<T>& other) : vec_data(other.cols())
     {
-        // std::copy(std::begin(matr_data.data), std::end(matr_data.data), std::begin(arr));
-        for (int i = 0; i < vec_data.cols; i ++)
-        {
-            vec_data.data[i] = arr[i];
-        }
+        copy(other.vec_data.data, other.vec_data.data + vec_data.cols, vec_data.data);
+    }
+
+    void operator = (T* arr[])
+    {
+         std::copy(vec_data.data, vec_data.data + cols(), arr);
+//        for (int i = 0; i < vec_data.cols; i ++)
+//        {
+//            vec_data.data[i] = arr[i];
+//        }
 
     }
     void operator = (std::initializer_list<T> ilst)
@@ -60,14 +65,14 @@ public:
         {
             throw std::out_of_range("Too big arr to initialize vector with");
         }
-        typename std::initializer_list<T>::iterator i;
-        for (i = begin(ilst); i != end(ilst); i++)
+
+        for (auto i = begin(ilst); i != end(ilst); i++)
         {
             vec_data.data[i - begin(ilst)] = *i;
         }
     }
 
-    size_t cols()
+    size_t cols() const
     {
         return vec_data.cols;
     }
@@ -77,10 +82,11 @@ public:
         return vec_data.data;
     }
 
-    void operator = (Vector<T> v)
+    Vector& operator = (const Vector<T>& other)
     {
-        vec_data = VectorMemory(v.cols());
-        *this = v.vecToArr();
+        vec_data = VectorMemory(other.vec_data.cols);
+        copy(other.vec_data.data, other.vec_data.data + vec_data.cols, vec_data.data);
+        return *this;
     }
 
     inline T& operator()(size_t i) {
