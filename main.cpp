@@ -7,8 +7,11 @@ using namespace std;
 int main() {
 
     Matrix<int> A = {1, 2, 3, 4};
+
+
     Matrix<int> B(2, 2);
     B = {5, 7, 1, 8};
+    Matrix<int> De(2, 2);
 
     cout << A << endl;
     B += A;
@@ -17,6 +20,8 @@ int main() {
 
     Matrix<int> C(2, 2);
     Matrix<int> D(2, 2);
+    Matrix<int> Mat(2, 2);
+
 
     C = B + A;
     cout << "Result of adding 2 matrices with +:" << endl;
@@ -51,6 +56,17 @@ int main() {
     D = 2 * B;
     cout << "Result of multiplying scalar and matrix with *"<< endl;
     cout << D << endl;
+
+
+    De = - A;
+    cout << "Result of unary minus: "<< endl;
+    cout << De << endl;
+
+    Mat = 1 - A;
+    cout << "Result of substraction scalar(1) and matrix" << endl << A <<"result: "<< endl;
+    cout << Mat << endl;
+
+
 
     return 0;
 }

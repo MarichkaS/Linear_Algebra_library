@@ -224,7 +224,7 @@ public:
         return res;
     }
 
-//
+
     Matrix& operator*=(const T &scalar)
     {
         Matrix &self = *this;
@@ -237,19 +237,21 @@ public:
         return self;
     }
 
-//    Matrix operator-() const
-//    {
-//        const Matrix &self = *this;
-//        Matrix<int> res(rows(), cols());
-//
-//        for (size_t i = 0; i < rows(); i++) {
-//            for (size_t j = 0; j < cols(); j++) {
-//                res(i, j) = -self(i, j);
-//            }
-//        }
-//
-//        return res;
-//    }
+    Matrix &operator- ()
+    {
+        Matrix &mat = *this;
+
+
+        for (size_t i=0; i<rows(); i++)
+            for (size_t j=0; j<cols(); j++)
+                mat(i, j) =  - mat(i, j);
+        return mat;
+    }
+
+    Matrix &operator+ ()
+    {
+        return *this;
+    }
 
 };
 
@@ -287,8 +289,20 @@ inline Matrix<T> operator-(Matrix<T> left, const T &scalar)
 template<typename T>
 inline Matrix<T> operator-(const T &scalar, Matrix<T> right)
 {
-    assert(0 && "Not implemented!");
-    return Matrix<T>(1,1);
+//    Matrix self = -right;
+    return -right+=scalar;
+
+//    for (size_t i = 0; i < rows(); i++) {
+//        for (size_t k = 0; k < cols(); k++) {
+//            for (size_t j = 0; j < other.rows(); j++) {
+//                res(i, k) = self(i, j) * other(j, k);
+//            }
+//        }
+//    }
+//    return res;
+//
+//    assert(0 && "Not implemented!");
+//    return Matrix<T>(1,1);
 }
 
 template<typename T>
@@ -300,6 +314,7 @@ template<typename T>
 inline Matrix<T> operator*(const T& scalar, Matrix<T> right) {
     return right *= scalar;
 }
+
 
 
 
