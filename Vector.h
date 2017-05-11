@@ -118,29 +118,48 @@ public:
 
     double operator*(const Vector &other){
         const Vector &self = *this;
-        double result = 0;
         for (size_t i = 0; i < this->cols(); i++) {
-            result += self(i) * other(i);
+            self(i) * other(i);
         }
-        return result;
+        return *this;
     }
 
-    Vector operator+(const Vector &other) {
-        const Vector &self = *this;
-        Vector<double> res(this->cols());
+    Vector& operator+=(const Vector &other)
+    {
+        assert(cols()==other.cols());
+        Vector &self = *this;
         for (size_t i = 0; i < this->cols(); i++) {
-            res(i) = self(i) + other(i);
+             self(i) += other(i);
         }
-        return res;
+        return *this;  //memory saving?
     }
 
-    Vector operator-(const Vector &other) {
-        const Vector &self = *this;
-        Vector<double> res(this->cols());
+    Vector operator-=(const Vector &other) {
+        Vector &self = *this;
+
         for (size_t i = 0; i < this->cols(); i++) {
-            res(i) = self(i) - other(i);
+             self(i) -= other(i);
         }
-        return res;
+        return *this;
+    }
+
+    Vector& operator+=(const T &scalar)
+    {
+        Vector &self = *this;
+        for (size_t i = 0; i < cols(); i++) {
+            self(i) = self(i) + scalar;
+            }
+
+        return self;
+    }
+
+    Vector& operator-=(const T &scalar)
+    {
+        Vector &self = *this;
+        for (size_t i = 0; i < rows(); i++) {
+                self(i) = self(i) - scalar;
+        }
+        return self;
     }
 };
 
