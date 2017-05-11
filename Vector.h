@@ -156,7 +156,7 @@ public:
     Vector& operator-=(const T &scalar)
     {
         Vector &self = *this;
-        for (size_t i = 0; i < rows(); i++) {
+        for (size_t i = 0; i < cols(); i++) {
                 self(i) = self(i) - scalar;
         }
         return self;
