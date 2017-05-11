@@ -125,6 +125,11 @@ public:
         return res;
     }
 
+    double operator*=(const Vector &other){
+        const Vector &self = *this;
+        return self*other;
+    }
+
     Vector& operator+=(const Vector &other)
     {
         assert(cols()==other.cols());
@@ -168,6 +173,15 @@ public:
         return *this;
     }
 
+    Vector &operator- ()
+    {
+        Vector &vect =*this;
+            for (size_t i=0; i<cols(); i++){
+                vect(i) =  - vect(i);
+            }
+        return vect;
+    }
+
 };
 
 template<typename T>
@@ -186,8 +200,21 @@ inline Vector<T> operator+(Vector<T> vec, const T &scalar){
     return vec += scalar;
 }
 
+template<typename T>
+inline Vector<T> operator- (Vector<T> vec, const T &scalar) {
+    return vec -= scalar;
+}
 
+template<typename T>
+inline Vector<T> operator- (Vector<T> left, const Vector<T> other){
+    assert(left.cols() == other.cols());
+    return left -= other;
+}
 
-//inline Vector operator+(Vector x, const  Vector& y);
+template<typename T>
+inline Vector<T> operator- (const T &scalar, Vector<T> right) {
+    return -right += scalar;
+}
+
 
 #endif //LINEAR_ALGEBRA_LIBRARY_VECTOR_H
