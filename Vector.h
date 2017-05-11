@@ -118,10 +118,11 @@ public:
 
     double operator*(const Vector &other){
         const Vector &self = *this;
+        double res = 0;
         for (size_t i = 0; i < this->cols(); i++) {
-            self(i) * other(i);
+            res += self(i) * other(i);
         }
-        return *this;
+        return res;
     }
 
     Vector& operator+=(const Vector &other)
