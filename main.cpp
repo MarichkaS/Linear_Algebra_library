@@ -7,6 +7,7 @@ using namespace std;
 int main() {
 
     Matrix<int> A = {1, 2, 3, 4};
+    //Vector<double> vA = {1,2,1,2}; what's wrong with this init?
 
 
     Matrix<int> B(2, 2);

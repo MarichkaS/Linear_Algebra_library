@@ -162,7 +162,31 @@ public:
         }
         return self;
     }
+
+    Vector &operator+ ()
+    {
+        return *this;
+    }
+
 };
+
+template<typename T>
+inline Vector<T> operator+(Vector<T> left, const Vector<T> &other) {
+    assert(left.cols() == other.cols());
+    return left += other; //Vector+=Vector operator is overloaded inside the class
+}
+
+template<typename T>
+inline Vector<T> operator+(const T &scalar, Vector<T> other) {
+    return other += scalar;
+}
+
+template<typename T>
+inline Vector<T> operator+(Vector<T> vec, const T &scalar){
+    return vec += scalar;
+}
+
+
 
 //inline Vector operator+(Vector x, const  Vector& y);
 
