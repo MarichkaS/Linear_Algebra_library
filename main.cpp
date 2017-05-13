@@ -14,17 +14,20 @@ int main() {
     B = {5, 7, 1, 8};
     Matrix<int> De(2, 2);
 
-    cout << A << endl;
-    B += A;
-    cout << "Result of adding 2 matrices with +=:" << endl;
-    cout << B << endl;
+    //cout << A << endl;
+    //B += A;
+    //cout << "Result of adding 2 matrices with +=:" << endl;
+    //cout << B << endl;
 
     Matrix<int> C(2, 2);
     Matrix<int> D(2, 2);
     Matrix<int> Mat(2, 2);
 
+    D = 2 * B;
+    cout << "Result of multiplying scalar and matrix with *"<< endl;
+    cout << D << endl;
 
-    C = B + A;
+ /**   C = B + A;
     cout << "Result of adding 2 matrices with +:" << endl;
     cout << C << endl;
 
@@ -41,7 +44,7 @@ int main() {
     cout << "Result of adding 2 matrices with -:"<< endl;
     cout << D << endl;
 
-
+    
     B-= A;
     cout << "Result of -= for 2 matr.: "<< endl;
     cout << B << endl;
@@ -66,7 +69,7 @@ int main() {
     Mat = 1 - A;
     cout << "Result of substraction scalar(1) and matrix" << endl << A <<"result: "<< endl;
     cout << Mat << endl;
-
+    */
 
 
     return 0;

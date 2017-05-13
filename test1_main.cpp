@@ -30,7 +30,7 @@ namespace {
         //Matrix<int> M;
         };
 
-    TEST_F(MatrixTest, Addition){
+    TEST_F(MatrixTest, MatrixTest_Addition_Test){
     Matrix<int> A(2, 2);
     Matrix<int> B(2, 2);
 
@@ -39,8 +39,23 @@ namespace {
 
     Matrix<int> Ans(2, 2);
     Ans = {2, 4, 6, 8};
-    //EXPECT_EQ(Ans, A+B);
+    Matrix<int> Get(2, 2);
+        Get = {2, 4, 6, 8};
+        //ASSERT_EQ(Ans, Get);
     }
+
+    TEST_F(MatrixTest, MatrixTest_Subtraction_Test){
+        Matrix<int> A(2, 2);
+        Matrix<int> B(2, 2);
+
+        A = {1,2,3,4};
+        B = {1,2,3,4};
+
+        Matrix<int> Ans(2, 2);
+        Ans = {2, 4, 6, 8};
+        //EXPECT_EQ(Ans, A-B);
+    }
+
 
 }  // namespace
 

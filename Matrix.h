@@ -10,8 +10,12 @@
 #include <string>
 #include <cassert>
 #include <cmath>
+#include <thread>
+#include <vector>
+
 
 using namespace std;
+
 template <class T>
 class Matrix {
 private:
@@ -225,16 +229,34 @@ public:
     }
 
 
+    void sc_product(double scalar, size_t n) {
+        for (size_t iter = 0; iter < rows(); iter++) {
+            (*this)(iter, n) = (*this)(iter, n) * scalar;
+        }
+    }
+
     Matrix& operator*=(const T &scalar)
     {
-        Matrix &self = *this;
+        //Matrix &self = *this;
+        std::vector<std::thread> th;
 
-        for (size_t i = 0; i < rows(); i++) {
+        size_t nr_threads = cols();
+
+        for (size_t n = 0; n < nr_threads; ++n) {
+            th.push_back(std::thread(&Matrix::sc_product, this,  scalar, n));
+        }
+
+        for(auto &t : th){
+            t.join();
+        }
+
+        /**for (size_t i = 0; i < rows(); i++) {
             for (size_t j = 0; j < cols(); j++) {
                 self(i, j) = self(i, j) * scalar;
+
             }
-        }
-        return self;
+        }**/
+        return *this;
     }
 
     Matrix &operator- ()
@@ -314,7 +336,6 @@ template<typename T>
 inline Matrix<T> operator*(const T& scalar, Matrix<T> right) {
     return right *= scalar;
 }
-
 
 
 
