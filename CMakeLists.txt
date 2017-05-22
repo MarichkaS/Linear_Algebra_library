@@ -3,6 +3,7 @@ project(Linear_Algebra_library)
 
 set(CMAKE_CXX_STANDARD 11)
 add_subdirectory(lib/googletest-master)
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 
 include_directories(lib/googletest-master/googletest/include)
 include_directories(lib/googletest-master/googlemock/include)

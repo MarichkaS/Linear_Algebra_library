@@ -1,31 +1,33 @@
 #include <iostream>
 #include "Matrix.h"
-#include "Vector.h"
+//#include "Vector.h"
 
 using namespace std;
 
 int main() {
 
-    Matrix<int> A = {1, 2, 3, 4};
-    //Vector<double> vA = {1,2,1,2}; what's wrong with this init?
-
-
+    Matrix<int> A(2,2);
+    A = {1, 2, 3, 4};
+//    //Vector<double> vA = {1,2,1,2}; what's wrong with this init?
+//
+//
     Matrix<int> B(2, 2);
-    B = {5, 7, 1, 8};
-    Matrix<int> De(2, 2);
-
-    //cout << A << endl;
-    //B += A;
-    //cout << "Result of adding 2 matrices with +=:" << endl;
-    //cout << B << endl;
-
-    Matrix<int> C(2, 2);
-    Matrix<int> D(2, 2);
-    Matrix<int> Mat(2, 2);
-
-    D = 2 * B;
-    cout << "Result of multiplying scalar and matrix with *"<< endl;
-    cout << D << endl;
+     B = {5, 7, 1, 8};
+    Matrix<int> C = A.multiplication(B);
+//    Matrix<int> De(2, 2);
+//
+//    //cout << A << endl;
+//    //B += A;
+//    //cout << "Result of adding 2 matrices with +=:" << endl;
+//    //cout << B << endl;
+//
+//    Matrix<int> C(2, 2);
+//    Matrix<int> D(2, 2);
+//    Matrix<int> Mat(2, 2);
+//
+//    D = 2 * B;
+//    cout << "Result of multiplying scalar and matrix with *"<< endl;
+//    cout << D << endl;
 
  /**   C = B + A;
     cout << "Result of adding 2 matrices with +:" << endl;

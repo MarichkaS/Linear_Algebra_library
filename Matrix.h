@@ -10,12 +10,13 @@
 #include <string>
 #include <cassert>
 #include <cmath>
+#include "Vector.h"
 #include <thread>
+#include <mutex>
 #include <vector>
 
-
 using namespace std;
-
+//mutex mtx;
 template <class T>
 class Matrix {
 private:
@@ -228,35 +229,46 @@ public:
         return res;
     }
 
-
-    void sc_product(double scalar, size_t n) {
-        for (size_t iter = 0; iter < rows(); iter++) {
-            (*this)(iter, n) = (*this)(iter, n) * scalar;
+    Matrix<T> multiplication(const Matrix<T> &other) const
+    {
+        const Matrix<T> &self = *this;
+        Matrix<T> res(rows(), other.cols());
+        thread workingThreads[this->rows()];
+        for (int i = 0; i < this->rows(); i++) {
+            workingThreads[i] = thread(&Matrix<T>::multthread, this, other, self, &res, i);
         }
+        for (int i = 0; i < this->rows(); i++) {
+            workingThreads[i].join() ;
+        }
+        return res;
     }
+
+
+    void multthread(const Matrix& other, const Matrix &self, Matrix &result, int numbofrow)
+    {
+        auto index = self.matr_data.data + (numbofrow - 1) * self.cols();
+        vector<T> res(self.cols());
+        for (int j = 0; j < other.cols(); j++) {
+            for (int i = 0; i < other.rows(); i++) {
+                res[j] += self(numbofrow, i) * other(i, j);
+            }
+        }
+        //lock_guard<std::mutex> lock(mtx);
+        copy(begin(res), end(res), index);
+
+    }
+
 
     Matrix& operator*=(const T &scalar)
     {
-        //Matrix &self = *this;
-        std::vector<std::thread> th;
+        Matrix &self = *this;
 
-        size_t nr_threads = cols();
-
-        for (size_t n = 0; n < nr_threads; ++n) {
-            th.push_back(std::thread(&Matrix::sc_product, this,  scalar, n));
-        }
-
-        for(auto &t : th){
-            t.join();
-        }
-
-        /**for (size_t i = 0; i < rows(); i++) {
+        for (size_t i = 0; i < rows(); i++) {
             for (size_t j = 0; j < cols(); j++) {
                 self(i, j) = self(i, j) * scalar;
-
             }
-        }**/
-        return *this;
+        }
+        return self;
     }
 
     Matrix &operator- ()
@@ -336,6 +348,7 @@ template<typename T>
 inline Matrix<T> operator*(const T& scalar, Matrix<T> right) {
     return right *= scalar;
 }
+
 
 
 
