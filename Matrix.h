@@ -189,28 +189,52 @@ public:
         return *this;
     }
 
+    void sc_addition(double scalar, size_t n) {
+        for (size_t iter = 0; iter < rows(); iter++) {
+            (*this)(iter, n) = (*this)(iter, n) + scalar;
+        }
+    }
+
     Matrix& operator+=(const T &scalar)
     {
-        Matrix &self = *this;
+        /**
+         * Parallel addition of scalar to matrix (Matrix + scalar)
+         */
+        std::vector<std::thread> th;
 
-        for (size_t i = 0; i < rows(); i++) {
-            for (size_t j = 0; j < cols(); j++) {
-                self(i, j) = self(i, j) + scalar;
-            }
+        size_t nr_threads = cols();
+        for (size_t n = 0; n < nr_threads; ++n) {
+            th.push_back(std::thread(&Matrix::sc_addition, this, scalar, n));
         }
-        return self;
+        for (auto &t : th) {
+            t.join();
+        }
+        return *this;
+    }
+
+
+    void sc_subtraction(double scalar, size_t n) {
+        for (size_t iter = 0; iter < rows(); iter++) {
+            (*this)(iter, n) = (*this)(iter, n) - scalar;
+        }
     }
 
     Matrix& operator-=(const T &scalar)
     {
-        Matrix &self = *this;
+        /**
+         * Parallel subtraction (Matrix - scalar)
+         */
+        std::vector<std::thread> th;
 
-        for (size_t i = 0; i < rows(); i++) {
-            for (size_t j = 0; j < cols(); j++) {
-                self(i, j) = self(i, j) - scalar;
-            }
+        size_t nr_threads = cols();
+        for (size_t n = 0; n < nr_threads; ++n) {
+            th.push_back(std::thread(&Matrix::sc_subtraction, this, scalar, n));
         }
-        return self;
+
+        for (auto &t : th) {
+            t.join();
+        }
+        return *this;
     }
 
     Matrix operator*(const Matrix &other) const {
@@ -231,6 +255,9 @@ public:
 
     Matrix<T> multiplication(const Matrix<T> &other) const
     {
+        /**
+        *  Parallel multiplication of two matrices
+        */
         const Matrix<T> &self = *this;
         Matrix<T> res(rows(), other.cols());
         thread workingThreads[this->rows()];
@@ -258,17 +285,29 @@ public:
 
     }
 
+    void sc_product(double scalar, size_t n) {
+        for (size_t iter = 0; iter < rows(); iter++) {
+            (*this)(iter, n) = (*this)(iter, n) * scalar;
+        }
+    }
 
     Matrix& operator*=(const T &scalar)
     {
-        Matrix &self = *this;
+        /**
+         * Parallel multiplication by scalar
+         */
+        std::vector<std::thread> th;
 
-        for (size_t i = 0; i < rows(); i++) {
-            for (size_t j = 0; j < cols(); j++) {
-                self(i, j) = self(i, j) * scalar;
-            }
+
+        size_t nr_threads = cols();
+        for (size_t n = 0; n < nr_threads; ++n) {
+            th.push_back(std::thread(&Matrix::sc_product, this, scalar, n));
         }
-        return self;
+
+        for (auto &t : th) {
+                t.join();
+        }
+        return *this;
     }
 
     Matrix &operator- ()

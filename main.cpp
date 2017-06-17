@@ -11,9 +11,16 @@ int main() {
 //    //Vector<double> vA = {1,2,1,2}; what's wrong with this init?
 //
 //
+
     Matrix<int> B(2, 2);
      B = {5, 7, 1, 8};
-    Matrix<int> C = A.multiplication(B);
+
+    Matrix<int> C = B+4;
+    cout << C;
+
+
+    //Matrix<int> C = A.multiplication(B);
+    //cout << C;
 //    Matrix<int> De(2, 2);
 //
 //    //cout << A << endl;
