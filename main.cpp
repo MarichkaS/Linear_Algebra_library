@@ -15,7 +15,7 @@ int main() {
     Matrix<int> B(2, 2);
      B = {5, 7, 1, 8};
 
-    Matrix<int> C = B+4;
+    Matrix<int> C = B+A;
     cout << C;
 
 

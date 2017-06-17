@@ -161,30 +161,51 @@ public:
         return out;
     }
 
+    void mtrx_addition(const Matrix other, size_t n){
+        for (size_t iter = 0; iter < rows(); iter++) {
+            (*this)(iter, n) = (*this)(iter, n) + other(iter, n);
+        }
+    }
 
     Matrix& operator+=(const Matrix &other)
     {
-        assert(cols()==other.cols() && rows()==other.rows());
-        Matrix &self = *this;
+        /**
+         * Parallel matrix addition (Matrix + Matrix)
+         */
+        std::vector<std::thread> th;
 
-        for (size_t i = 0; i < this->rows(); i++) {
-            for (size_t j = 0; j < this->cols(); j++) {
-                self(i, j) += other(i, j);
-            }
+        size_t nr_threads = cols();
+        for (size_t n = 0; n < nr_threads; ++n) {
+            th.push_back(std::thread(&Matrix::mtrx_addition, this, other, n));
+        }
+
+        for (auto &t : th) {
+            t.join();
         }
         return *this;
     }
 
 
+    void mtrx_subtraction(const Matrix other, size_t n){
+        for (size_t iter = 0; iter < rows(); iter++) {
+            (*this)(iter, n) = (*this)(iter, n) - other(iter, n);
+        }
+    }
+
     Matrix& operator-=(const Matrix &other)
     {
-        assert(cols()==other.cols() && rows()==other.rows());
-        Matrix &self = *this;
+        /**
+         * Parallel subtraction (Matrix - Matrix)
+         */
+        std::vector<std::thread> th;
 
-        for (size_t i = 0; i < this->rows(); i++) {
-            for (size_t j = 0; j < this->cols(); j++) {
-                self(i, j) -= other(i, j);
-            }
+        size_t nr_threads = cols();
+        for (size_t n = 0; n < nr_threads; ++n) {
+            th.push_back(std::thread(&Matrix::mtrx_subtraction, this, other, n));
+        }
+
+        for (auto &t : th) {
+            t.join();
         }
         return *this;
     }
