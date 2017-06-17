@@ -48,6 +48,7 @@ private:
         MatrixMemory (const MatrixMemory& other):
                 rows(other.rows), cols(other.cols)
         {
+            cout << "copy" << endl;
             data = new T[other.rows * other.cols];
             copy(other.data, other.data + (rows * cols), data);
         }
@@ -61,6 +62,7 @@ private:
 
         MatrixMemory& operator=(const MatrixMemory& b)
         {
+            cout << "copy" << endl;
             MatrixMemory temp(b);
             MatrixMemory::swap(temp, *this);
             return *this;
@@ -73,16 +75,17 @@ public:
 
     Matrix(size_t r, size_t c) : matr_data(c, r) {}
 #if 0
-    void operator = (T* arr[])
+    Matrix<T>(const Matrix<T> &obj)
+    : matr_data(obj.cols(), obj.rows())
     {
-
-        //std::cout << (sizeof(arr) / sizeof(arr[0])) << std::endl;
+        cout << "blabla" << endl;
+//        std::cout << (sizeof(arr) / sizeof(arr[0])) << std::endl;
 //        if ((sizeof(arr) / sizeof(arr[0]) ) > matr_data.rows * matr_data.cols) //TODO:FIX
 //        {
 //            throw std::out_of_range("Too big arr to initialize matrix with");
 //        }
-        std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), arr);
-
+//        std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), arr);
+        //this->matr_data = obj.matr_data;
     }
 #endif
     // square matrix only
@@ -258,23 +261,23 @@ public:
         return *this;
     }
 
-    Matrix operator*(const Matrix &other) const {
-//        assert(cols == other.rows) ;
+//    Matrix operator*(const Matrix &other) const {
+////        assert(cols == other.rows) ;
+//
+//        const Matrix &self = *this;
+//        Matrix<int> res(rows(), cols());
+//
+//        for (size_t i = 0; i < rows(); i++) {
+//            for (size_t k = 0; k < cols(); k++) {
+//                for (size_t j = 0; j < other.rows(); j++) {
+//                    res(i, k) = self(i, j) * other(j, k);
+//                }
+//            }
+//        }
+//        return res;
+//    }
 
-        const Matrix &self = *this;
-        Matrix<int> res(rows(), cols());
-
-        for (size_t i = 0; i < rows(); i++) {
-            for (size_t k = 0; k < cols(); k++) {
-                for (size_t j = 0; j < other.rows(); j++) {
-                    res(i, k) = self(i, j) * other(j, k);
-                }
-            }
-        }
-        return res;
-    }
-
-    Matrix<T> multiplication(const Matrix<T> &other) const
+    Matrix<T> operator*(const Matrix<T> &other)
     {
         /**
         *  Parallel multiplication of two matrices
@@ -283,7 +286,7 @@ public:
         Matrix<T> res(rows(), other.cols());
         thread workingThreads[this->rows()];
         for (int i = 0; i < this->rows(); i++) {
-            workingThreads[i] = thread(&Matrix<T>::multthread, this, other, self, &res, i);
+            workingThreads[i] = thread(&Matrix::multthread, this, cref(other), cref(self), ref(res), i);
         }
         for (int i = 0; i < this->rows(); i++) {
             workingThreads[i].join() ;
@@ -294,7 +297,7 @@ public:
 
     void multthread(const Matrix& other, const Matrix &self, Matrix &result, int numbofrow)
     {
-        auto index = self.matr_data.data + (numbofrow - 1) * self.cols();
+        auto index = result.matr_data.data + (numbofrow) * self.cols();
         vector<T> res(self.cols());
         for (int j = 0; j < other.cols(); j++) {
             for (int i = 0; i < other.rows(); i++) {
