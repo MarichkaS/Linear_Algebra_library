@@ -7,17 +7,23 @@ using namespace std;
 int main() {
 //    testing matrices:
     Matrix<int> A(2,2);
-    A = {1, 2, 3, 4};
+    A = {1, 2,3, 4};
 
     Matrix<int> B(2, 2);
-     B = {5, 7, 1, 8};
+     B = {5, 6,7, 8};
 
-    Matrix<int> C = B+A;
-    cout << C;
-
-    //Matrix<int> C = A.multiplication(B);
+    //Matrix<int> C = B+A;
     //cout << C;
+    //cout << A;
 
+//    Matrix<int> D = 1 + B;
+//    cout << B;
+//    cout << D;
+
+    Matrix<int> C = A * B;
+    cout << C << endl;
+    B *=2;
+    cout << C << endl;
 
 
 //    testing vectors:
