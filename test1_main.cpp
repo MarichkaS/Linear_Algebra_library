@@ -41,7 +41,7 @@ namespace {
         Ans = {2, 4, 6, 8};
         Matrix<int> Get(2, 2);
         Get = {2, 4, 6, 8};
-//        ASSERT_EQ(Ans, Get);
+        ASSERT_EQ(Ans, Get);
     }
 
     TEST_F(MatrixTest, MatrixTest_Subtraction_Test) {
@@ -52,43 +52,60 @@ namespace {
         B = {1, 2, 3, 4};
 
         Matrix<int> Ans(2, 2);
-        Ans = {2, 4, 6, 8};
-        //EXPECT_EQ(Ans, A-B);
+        Ans = {0, 0 ,0,0};
+        EXPECT_EQ(Ans, A-B);
     }
 
     TEST_F(MatrixTest, Adding_matr_first){
-        Matrix<int> A = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-        Matrix<int> B = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Matrix<int> A = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, };
+        Matrix<int> B = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 
-        Matrix<int> res = A +B;
-        Matrix<int> exp = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+        Matrix<int> res = A + B;
+        Matrix<int> exp = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,};
 
-//        EXPECT_EQ(exp, res);
+        EXPECT_EQ(exp, res);
     }
 
     TEST_F(MatrixTest, Adding_matr_sec){
-        Matrix<int> A = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
-        Matrix<int> B = {-10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10};
+        Matrix<int> A = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, };
+        Matrix<int> B = {-10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, };
 
         Matrix<int> res = A + B;
-        Matrix<int> exp = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Matrix<int> exp = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 
-//        EXPECT_EQ(exp, res);
+        EXPECT_EQ(exp, res);
     }
 
     TEST_F(MatrixTest, Adding_matr_thr){
-        Matrix<int> A = {100, 1013, 132, 38, 98, 32, 120, 129, 33, 21, 43, 78};
-        Matrix<int> B = {39, 381, 121, 48, 23, 343, 43, 88, 923, 32, 12, 131};
+        Matrix<int> A = {100, 1013, 132, 38, 98, 32, 120, 129, 33, 21, 43, 78, 1, 1, 1, 1};
+        Matrix<int> B = {39, 381, 121, 48, 23, 343, 43, 88, 923, 32, 12, 131, 1, 1, 1, 1};
 
         Matrix<int> res = A + B;
-        Matrix<int> exp = {139, 1394, 253, 86, 121, 375, 163, 217, 956, 53, 55, 209};
+        Matrix<int> exp = {139, 1394, 253, 86, 121, 375, 163, 217, 956, 53, 55, 209, 2, 2, 2, 2};
 
-//        EXPECT_EQ(exp, res);
+        EXPECT_EQ(exp, res);
     }
 
 
-//    TEST_F()
+    TEST_F(MatrixTest, Subtr_matr_1){
+        Matrix<int> A = {100, 1013, 132, 38, 98, 32, 120, 129, 33, 21, 43, 78, 128, 21, 78, 329,};
+        Matrix<int> B = {39, 381, 121, 48, 23, 343, 43, 88, 923, 32, 12, 131, 5, 988, 425, 16,};
 
+        Matrix<int> res = A - B;
+        Matrix<int> exp = {61,632,11,-10,75,-311,77,41,-890,-11, 31,-53,123,-967,-347,313,};
+
+        EXPECT_EQ(exp, res);
+    }
+
+    TEST_F(MatrixTest, Subtr_matr_2){
+        Matrix<int> A = {-100, -1013, -132, -38, -98, -32, -120, -129, -33, -21, -43, -78, -128, -21, -78, -329,};
+        Matrix<int> B = {-39, -381, -121, -48, -23, -343, -43, -88, -923, -32, -12, -131, -5, -988, -425, -16,};
+
+        Matrix<int> res = A - B;
+        Matrix<int> exp = { -61,-632,-11, 10, -75, 311, -77, -41, 890,  11, -31,  53,-123, 967, 347,-313};
+
+        EXPECT_EQ(exp, res);
+    }
 
 
 

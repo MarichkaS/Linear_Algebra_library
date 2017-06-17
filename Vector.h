@@ -6,10 +6,12 @@
 #include <string>
 #include <cassert>
 #include <cmath>
-#include "Vector.h"
 #include <thread>
 #include <mutex>
 #include <vector>
+
+
+using namespace std;
 
 template <class T>
 class Vector {
@@ -60,24 +62,6 @@ private:
             return *this;
         }
 
-//    Vector(const Vector<T>& other) : vec_data(other.cols())
-//    {
-//        copy(other.vec_data.data, other.vec_data.data + vec_data.cols, vec_data.data);
-//    }
-//
-//        VectorMemory (const VectorMemory<T>& other):
-//                vec_data(other.cols())
-//        {
-//            copy(other.vec_data.data, other.vec_data.data + vec_data.cols, vec_data.data);
-//        }
-//
-////                cols(other.cols)
-////        {
-////            data = new T[other.cols];
-////            copy(other.vect_data.data, other.data + cols, data);      //???????????????
-////
-////        }
-
     } vec_data;
 
 public:
@@ -107,7 +91,6 @@ public:
         {
             vec_data.data[i - begin(ilst)] = *i;
         }
-        //std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), begin(ilst));
         return *this;
     }
 
@@ -148,15 +131,48 @@ public:
         return out;
     }
 
+    bool operator==(const Vector &other) const
+    {
+        if(cols()!=other.cols())
+            return false;
+        for (int i = 0; i < vec_data.cols; i ++)
+        {
+                if( (*this)(i) != other(i))
+                    return false;
+        }
+        return true;
+    }
+
+    bool operator!=(const Vector &other) const {
+        return !((*this) == other);
+    }
+
+//    void vctr_addition(const Vector &other, size_t n){
+//        for (size_t i = 0; i < floor(cols()/6); i++){
+//            ()
+//        }
+//
+//    }
+
     Vector& operator+=(const Vector &other)
     {
-        assert(cols()==other.cols());
-        Vector &self = *this;
+        /**
+         * Parallel vectors' addition
+         */
 
-        for (size_t i = 0; i < this->cols(); i++) {
-            self(i) += other(i);
-        }
-        return *this;
+//        std::vector<std::thread> th;
+//
+//        size_t num_threads = floor(cols()/6);
+//        for (size_t n = 0; n < num_threads; ++n) {
+//            th.push_back(std::thread(&Vector::vctr_addition, this, other, n));
+//        }
+//
+//
+//
+//        for (auto &t : th) {
+//            t.join();
+//        }
+//        return *this;
     }
 
     Vector& operator-=(const Vector &other) {
