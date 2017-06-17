@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Matrix.h"
-//#include "Vector.h"
+#include "Vector.h"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ int main() {
     A = {1, 2,3, 4};
 
     Matrix<int> B(2, 2);
-     B = {5, 6,7, 8};
+    B = {5, 6,7, 8};
 
     //Matrix<int> C = B+A;
     //cout << C;

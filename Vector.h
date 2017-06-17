@@ -94,7 +94,6 @@ public:
         return *this;
     }
 
-
     size_t cols() const
     {
         return vec_data.cols;
@@ -166,9 +165,7 @@ public:
 //        for (size_t n = 0; n < num_threads; ++n) {
 //            th.push_back(std::thread(&Vector::vctr_addition, this, other, n));
 //        }
-//
-//
-//
+
 //        for (auto &t : th) {
 //            t.join();
 //        }
