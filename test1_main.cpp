@@ -28,39 +28,132 @@ namespace {
 
         // Objects declared here can be used by all tests in the test case for Matrix.
         //Matrix<int> M;
-        };
+    };
 
-    TEST_F(MatrixTest, MatrixTest_Addition_Test){
-    Matrix<int> A(2, 2);
-    Matrix<int> B(2, 2);
-
-    A = {1,2,3,4};
-    B = {1,2,3,4};
-
-    Matrix<int> Ans(2, 2);
-    Ans = {2, 4, 6, 8};
-    Matrix<int> Get(2, 2);
-        Get = {2, 4, 6, 8};
-        //ASSERT_EQ(Ans, Get);
-    }
-
-    TEST_F(MatrixTest, MatrixTest_Subtraction_Test){
+    TEST_F(MatrixTest, MatrixTest_Addition_Test) {
         Matrix<int> A(2, 2);
         Matrix<int> B(2, 2);
 
-        A = {1,2,3,4};
-        B = {1,2,3,4};
+        A = {1, 2, 3, 4};
+        B = {1, 2, 3, 4};
+
+        Matrix<int> Ans(2, 2);
+        Ans = {2, 4, 6, 8};
+        Matrix<int> Get(2, 2);
+        Get = {2, 4, 6, 8};
+//        ASSERT_EQ(Ans, Get);
+    }
+
+    TEST_F(MatrixTest, MatrixTest_Subtraction_Test) {
+        Matrix<int> A(2, 2);
+        Matrix<int> B(2, 2);
+
+        A = {1, 2, 3, 4};
+        B = {1, 2, 3, 4};
 
         Matrix<int> Ans(2, 2);
         Ans = {2, 4, 6, 8};
         //EXPECT_EQ(Ans, A-B);
     }
 
+    TEST_F(MatrixTest, Adding_matr_first){
+        Matrix<int> A = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+        Matrix<int> B = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+        Matrix<int> res = A +B;
+        Matrix<int> exp = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+//        EXPECT_EQ(exp, res);
+    }
+
+    TEST_F(MatrixTest, Adding_matr_sec){
+        Matrix<int> A = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+        Matrix<int> B = {-10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10};
+
+        Matrix<int> res = A + B;
+        Matrix<int> exp = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+//        EXPECT_EQ(exp, res);
+    }
+
+    TEST_F(MatrixTest, Adding_matr_thr){
+        Matrix<int> A = {100, 1013, 132, 38, 98, 32, 120, 129, 33, 21, 43, 78};
+        Matrix<int> B = {39, 381, 121, 48, 23, 343, 43, 88, 923, 32, 12, 131};
+
+        Matrix<int> res = A + B;
+        Matrix<int> exp = {139, 1394, 253, 86, 121, 375, 163, 217, 956, 53, 55, 209};
+
+//        EXPECT_EQ(exp, res);
+    }
+
+
+//    TEST_F()
+
+
+
+
+    //cout << A << endl;
+    //B += A;
+    //cout << "Result of adding 2 matrices with +=:" << endl;
+    //cout << B << endl;
+
+//    Matrix<int> C(2, 2);
+//    Matrix<int> D(2, 2);
+//    Matrix<int> Mat(2, 2);
+//
+//    D = 2 * B;
+//    cout << "Result of multiplying scalar and matrix with *"<<
+//    endl;
+//    cout << D <<
+//    endl;
+
+/**   C = B + A;
+   cout << "Result of adding 2 matrices with +:" << endl;
+   cout << C << endl;
+
+   C = B + 2;
+   cout << "Result of adding a scalar to matrix with +:" << endl;
+   cout << C << endl;
+
+   C = 2 + B;
+   cout << "Result of adding a scalar to matrix with +:" << endl;
+   cout << C << endl;
+
+
+   D = B - A;
+   cout << "Result of adding 2 matrices with -:"<< endl;
+   cout << D << endl;
+
+
+   B-= A;
+   cout << "Result of -= for 2 matr.: "<< endl;
+   cout << B << endl;
+
+   D = B * A;
+   cout << "Result of multiplying 2 matrices with *"<< endl;
+   cout << D << endl;
+
+   D = B * 2;
+   cout << "Result of multiplying matrix and scalar with *"<< endl;
+   cout << D << endl;
+
+   D = 2 * B;
+   cout << "Result of multiplying scalar and matrix with *"<< endl;
+   cout << D << endl;
+
+
+   De = - A;
+   cout << "Result of unary minus: "<< endl;
+   cout << De << endl;
+
+   Mat = 1 - A;
+   cout << "Result of substraction scalar(1) and matrix" << endl << A <<"result: "<< endl;
+   cout << Mat << endl;
+*/
 }  // namespace
 
 int main(int ac, char* av[])
 {
-    testing::InitGoogleTest(&ac, av);
-    return RUN_ALL_TESTS();
+   testing::InitGoogleTest(&ac, av);
+   return RUN_ALL_TESTS();
 }

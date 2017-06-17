@@ -9,7 +9,7 @@
 #include "Vector.h"
 #include <thread>
 #include <mutex>
-#include <vector>    
+#include <vector>
 
 template <class T>
 class Vector {
