@@ -9,7 +9,7 @@ include_directories(lib/googletest-master/googletest/include)
 include_directories(lib/googletest-master/googlemock/include)
 
 set(SOURCE_FILES Matrix.cpp Matrix.h Vector.cpp Vector.h)
-add_executable(Linear_Algebra_library ${SOURCE_FILES} main.cpp)
+add_executable(Linear_Algebra_library ${SOURCE_FILES} main.cpp .idea/NoParallelVect.h)
 add_executable(test1 ${SOURCE_FILES} test1_main.cpp)
 
 
