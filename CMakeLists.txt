@@ -11,7 +11,9 @@ include_directories(lib/googletest-master/googlemock/include)
 set(SOURCE_FILES Matrix.cpp Matrix.h Vector.cpp Vector.h)
 add_executable(Linear_Algebra_library ${SOURCE_FILES} main.cpp)
 add_executable(test1 ${SOURCE_FILES} test1_main.cpp)
+add_executable(test2 ${SOURCE_FILES} test2_main.cpp)
 
 
 target_link_libraries(Linear_Algebra_library gtest gtest_main)
 target_link_libraries(test1 gtest gtest_main)
+target_link_libraries(test2 gtest gtest_main)
