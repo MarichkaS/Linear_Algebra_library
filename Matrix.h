@@ -10,7 +10,7 @@
 #include <thread>
 #include <mutex>
 #include <vector>
-#define NUMB_OF_THREADS 10
+#define NUMB_OF_THREADS 5
 
 using namespace std;
 //mutex mtx;
@@ -107,6 +107,15 @@ public:
             matr_data.data[i - begin(ilst)] = *i;
         }
         //std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), begin(ilst));
+        return *this;
+    }
+
+    Matrix& fromVector(std::vector<T> vc)
+    {
+        for (auto i = begin(vc); i != end(vc); i++)
+        {
+            matr_data.data[i - begin(vc)] = *i;
+        }
         return *this;
     }
 
