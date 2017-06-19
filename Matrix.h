@@ -10,6 +10,7 @@
 #include <thread>
 #include <mutex>
 #include <vector>
+#define NUMB_OF_THREADS 10
 
 using namespace std;
 //mutex mtx;
@@ -44,7 +45,7 @@ private:
         MatrixMemory (const MatrixMemory& other):
                 rows(other.rows), cols(other.cols)
         {
-//            cout << "copy" << endl;
+
             data = new T[other.rows * other.cols];
             copy(other.data, other.data + (rows * cols), data);
         }
@@ -58,7 +59,6 @@ private:
 
         MatrixMemory& operator=(const MatrixMemory& b)
         {
-            cout << "copy" << endl;
             MatrixMemory temp(b);
             MatrixMemory::swap(temp, *this);
             return *this;
@@ -69,7 +69,7 @@ private:
 
 public:
 
-    Matrix(size_t r, size_t c) : matr_data(c, r) {}
+    Matrix(size_t r, size_t c) : matr_data(r, c) {}
 #if 0
     Matrix<T>(const Matrix<T> &obj)
     : matr_data(obj.cols(), obj.rows())
@@ -130,16 +130,34 @@ public:
 #endif
 
     inline T& operator()(size_t i, size_t j) {
-        if (i >= matr_data.rows || j >= matr_data.cols) {
-            throw std::out_of_range ("Matrix indexes out of range");
+//        if (i >= matr_data.rows || j >= matr_data.cols) {
+//            throw std::out_of_range ("Matrix indexes out of range");
+//        }
+
+        if (i >= rows())
+        {
+            throw std::out_of_range ("rows indexes out of range");
+        }
+        if (j >= cols())
+        {
+            throw std::out_of_range ("cols indexes out of range");
         }
         return matr_data(i, j);
 
     }
 
     inline const T& operator()(size_t i, size_t j) const {
-        if (i >= matr_data.rows || j >= matr_data.cols) {
-            throw std::out_of_range ("Matrix indexes out of range");
+//        if (i >= matr_data.rows || j >= matr_data.cols) {
+//            throw std::out_of_range ("Matrix indexes out of range");
+//        }
+
+        if (i >= rows())
+        {
+            throw std::out_of_range ("rows indexes out of range");
+        }
+        if (j >= cols())
+        {
+            throw std::out_of_range ("cols indexes out of range");
         }
         return matr_data(i, j);
 
@@ -148,9 +166,9 @@ public:
 
     friend std::ostream& operator<<(std::ostream& out, const Matrix& val){
         string c = "";
-        for (int i = 0; i < val.matr_data.cols; i ++)
+        for (int i = 0; i < val.matr_data.rows; i++)
         {
-            for (int j = 0; j< val.matr_data.rows; j ++){
+            for (int j = 0; j< val.matr_data.cols; j++){
                 c+= std::to_string(val(i, j));
                 c += " ";
             }
@@ -180,12 +198,23 @@ public:
     }
 
 
-    void mtrx_addition(const Matrix other, size_t n){
-        for (size_t iter = 0; iter < rows(); iter++) {
-            (*this)(iter, n) = (*this)(iter, n) + other(iter, n);
+    void mtrx_addition(const Matrix other, int indx, int size){
+        int r = indx / rows();
+        int c = indx % cols();
+        for (int i = 0; i < size; i++)
+        {
+            (*this)(r, c) = (*this)(r, c) + other(r, c);
+            c++;
+            if (c == cols())
+            {
+                c = 0;
+                r++;
+            }
         }
+//        for (size_t iter = 0; iter < rows(); iter++) {
+//            (*this)(iter, n) = (*this)(iter, n) + other(iter, n);
+//        }
     }
-
     Matrix& operator+=(const Matrix &other)
     {
         /**
@@ -193,11 +222,20 @@ public:
          */
         std::vector<std::thread> th;
 
-        size_t nr_threads = cols();
-        for (size_t n = 0; n < nr_threads; ++n) {
-            th.push_back(std::thread(&Matrix::mtrx_addition, this, other, n));
-        }
+        //size_t nr_threads = cols();
+//        for (size_t n = 0; n < nr_threads; ++n) {
+//            th.push_back(std::thread(&Matrix::mtrx_addition, this, other, n));
+//        }
 
+        int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
+        int j = 0;
+        for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
+        {
+            th.push_back(std::thread(&Matrix::mtrx_addition, this, other, j, entriesPerTHread));
+            j += entriesPerTHread;
+        }
+        th.push_back(std::thread(&Matrix::mtrx_addition, this, other, j,
+                                 entriesPerTHread + (rows() * cols()) % NUMB_OF_THREADS));
         for (auto &t : th) {
             t.join();
         }
@@ -205,10 +243,23 @@ public:
     }
 
 
-    void mtrx_subtraction(const Matrix other, size_t n){
-        for (size_t iter = 0; iter < rows(); iter++) {
-            (*this)(iter, n) = (*this)(iter, n) - other(iter, n);
+    void mtrx_subtraction(const Matrix other, int indx, int size){
+//        for (size_t iter = 0; iter < rows(); iter++) {
+//            (*this)(iter, n) = (*this)(iter, n) - other(iter, n);
+//        }
+        int r = indx / rows();
+        int c = indx % cols();
+        for (int i = 0; i < size; i++)
+        {
+            (*this)(r, c) = (*this)(r, c) - other(r, c);
+            c++;
+            if (c == cols())
+            {
+                c = 0;
+                r++;
+            }
         }
+
     }
 
     Matrix& operator-=(const Matrix &other)
@@ -218,20 +269,40 @@ public:
          */
         std::vector<std::thread> th;
 
-        size_t nr_threads = cols();
-        for (size_t n = 0; n < nr_threads; ++n) {
-            th.push_back(std::thread(&Matrix::mtrx_subtraction, this, other, n));
+//        size_t nr_threads = cols();
+//        for (size_t n = 0; n < nr_threads; ++n) {
+//            th.push_back(std::thread(&Matrix::mtrx_subtraction, this, other, n));
+//        }
+        int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
+        int j = 0;
+        for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
+        {
+            th.push_back(std::thread(&Matrix::mtrx_subtraction, this, other, j, entriesPerTHread));
+            j += entriesPerTHread;
         }
-
+        th.push_back(std::thread(&Matrix::mtrx_subtraction, this, other, j,
+                                 entriesPerTHread + (rows() * cols()) % NUMB_OF_THREADS));
         for (auto &t : th) {
             t.join();
         }
         return *this;
     }
 
-    void sc_addition(double scalar, size_t n) {
-        for (size_t iter = 0; iter < rows(); iter++) {
-            (*this)(iter, n) = (*this)(iter, n) + scalar;
+    void sc_addition(double scalar, int indx, int size) {
+//        for (size_t iter = 0; iter < rows(); iter++) {
+//            (*this)(iter, n) = (*this)(iter, n) + scalar;
+//        }
+        int r = indx / rows();
+        int c = indx % cols();
+        for (int i = 0; i < size; i++)
+        {
+            (*this)(r, c) = (*this)(r, c) + scalar;
+            c++;
+            if (c == cols())
+            {
+                c = 0;
+                r++;
+            }
         }
     }
 
@@ -241,11 +312,21 @@ public:
          * Parallel addition of scalar to matrix (Matrix + scalar)
          */
         std::vector<std::thread> th;
+//
+//        size_t nr_threads = cols();
+//        for (size_t n = 0; n < nr_threads; ++n) {
+//            th.push_back(std::thread(&Matrix::sc_addition, this, scalar, n));
+//        }
 
-        size_t nr_threads = cols();
-        for (size_t n = 0; n < nr_threads; ++n) {
-            th.push_back(std::thread(&Matrix::sc_addition, this, scalar, n));
+        int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
+        int j = 0;
+        for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
+        {
+            th.push_back(std::thread(&Matrix::sc_addition, this, scalar, j, entriesPerTHread));
+            j += entriesPerTHread;
         }
+        th.push_back(std::thread(&Matrix::sc_addition, this, scalar, j,
+                                 entriesPerTHread + (rows() * cols()) % NUMB_OF_THREADS));
         for (auto &t : th) {
             t.join();
         }
@@ -253,9 +334,21 @@ public:
     }
 
 
-    void sc_subtraction(double scalar, size_t n) {
-        for (size_t iter = 0; iter < rows(); iter++) {
-            (*this)(iter, n) = (*this)(iter, n) - scalar;
+    void sc_subtraction(double scalar, int indx, int size) {
+//        for (size_t iter = 0; iter < rows(); iter++) {
+//            (*this)(iter, n) = (*this)(iter, n) - scalar;
+//        }
+        int r = indx / rows();
+        int c = indx % cols();
+        for (int i = 0; i < size; i++)
+        {
+            (*this)(r, c) = (*this)(r, c) - scalar;
+            c++;
+            if (c == cols())
+            {
+                c = 0;
+                r++;
+            }
         }
     }
 
@@ -266,10 +359,19 @@ public:
          */
         std::vector<std::thread> th;
 
-        size_t nr_threads = cols();
-        for (size_t n = 0; n < nr_threads; ++n) {
-            th.push_back(std::thread(&Matrix::sc_subtraction, this, scalar, n));
+//        size_t nr_threads = cols();
+//        for (size_t n = 0; n < nr_threads; ++n) {
+//            th.push_back(std::thread(&Matrix::sc_subtraction, this, scalar, n));
+//        }
+        int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
+        int j = 0;
+        for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
+        {
+            th.push_back(std::thread(&Matrix::sc_subtraction, this, scalar, j, entriesPerTHread));
+            j += entriesPerTHread;
         }
+        th.push_back(std::thread(&Matrix::sc_subtraction, this, scalar, j,
+                                 entriesPerTHread + (rows() * cols()) % NUMB_OF_THREADS));
 
         for (auto &t : th) {
             t.join();
@@ -298,37 +400,71 @@ public:
         /**
         *  Parallel multiplication of two matrices
         */
+        if (cols() != other.rows())
+        {
+            throw out_of_range("Invalid matrix dimensions for multiplication");
+        }
         const Matrix<T> &self = *this;
         Matrix<T> res(rows(), other.cols());
-        thread workingThreads[this->rows()];
-        for (int i = 0; i < this->rows(); i++) {
-            workingThreads[i] = thread(&Matrix::multthread, this, cref(other), cref(self), ref(res), i);
+        int rowsPerThread = rows() / NUMB_OF_THREADS;
+//        thread workingThreads[this->rows()];
+//        for (int i = 0; i < this->rows(); i++) {
+//            workingThreads[i] = thread(&Matrix::multthread, this, cref(other), cref(self), ref(res), i);
+//        }
+
+        std::vector<std::thread> workingThreads;
+        int j = 0;
+        for (int i = 0; i < NUMB_OF_THREADS - 1; i++) {
+            workingThreads.push_back(thread(&Matrix::multthread, this, cref(other),
+                                            cref(self), ref(res), j, rowsPerThread));
+            j += (rowsPerThread);
         }
-        for (int i = 0; i < this->rows(); i++) {
-            workingThreads[i].join() ;
+        workingThreads.push_back(thread(&Matrix::multthread, this, cref(other),
+                                        cref(self), ref(res), j, rowsPerThread + rows() % NUMB_OF_THREADS));
+
+        for (auto &t : workingThreads) {
+            t.join();
         }
         return res;
     }
 
 
-    void multthread(const Matrix& other, const Matrix &self, Matrix &result, int numbofrow)
+    void multthread(const Matrix& other, const Matrix &self, Matrix &result, int indxofrow, int rowperThread)
     {
-        auto index = result.matr_data.data + (numbofrow) * self.cols();
-        vector<T> res(self.cols());
-        for (int j = 0; j < other.cols(); j++) {
-            for (int i = 0; i < other.rows(); i++) {
-                res[j] += self(numbofrow, i) * other(i, j);
+        for (int k = 0; k < rowperThread; k++) {
+            auto index = result.matr_data.data + (indxofrow + k) * result.cols();
+            vector<T> res(other.cols());
+            for (int j = 0; j < other.cols(); j++) {
+                for (int i = 0; i < other.rows(); i++) {
+                    res[j] += self(indxofrow + k, i) * other(i, j);
+                }
+
             }
+            //lock_guard<std::mutex> lock(mtx);
+            //cout <<"res: "<< res[0] << " " << res[1] << " " << res[2]<< " "<< res[3] << endl;
+
+            copy(begin(res), end(res), index);
         }
-        //lock_guard<std::mutex> lock(mtx);
-        copy(begin(res), end(res), index);
 
     }
 
-    void sc_product(double scalar, size_t n) {
-        for (size_t iter = 0; iter < rows(); iter++) {
-            (*this)(iter, n) = (*this)(iter, n) * scalar;
+    void sc_product(double scalar, int indx, int size) {
+//        for (size_t iter = 0; iter < rows(); iter++) {
+//            (*this)(iter, n) = (*this)(iter, n) * scalar;
+//        }
+        int r = indx / rows();
+        int c = indx % cols();
+        for (int i = 0; i < size; i++)
+        {
+            (*this)(r, c) = (*this)(r, c) * scalar;
+            c++;
+            if (c == cols())
+            {
+                c = 0;
+                r++;
+            }
         }
+
     }
 
     Matrix& operator*=(const T &scalar)
@@ -339,10 +475,19 @@ public:
         std::vector<std::thread> th;
 
 
-        size_t nr_threads = cols();
-        for (size_t n = 0; n < nr_threads; ++n) {
-            th.push_back(std::thread(&Matrix::sc_product, this, scalar, n));
+//        size_t nr_threads = cols();
+//        for (size_t n = 0; n < nr_threads; ++n) {
+//            th.push_back(std::thread(&Matrix::sc_product, this, scalar, n));
+//        }
+        int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
+        int j = 0;
+        for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
+        {
+            th.push_back(std::thread(&Matrix::sc_product, this, scalar, j, entriesPerTHread));
+            j += entriesPerTHread;
         }
+        th.push_back(std::thread(&Matrix::sc_product, this, scalar, j,
+                                 entriesPerTHread + (rows() * cols()) % NUMB_OF_THREADS));
 
         for (auto &t : th) {
             t.join();

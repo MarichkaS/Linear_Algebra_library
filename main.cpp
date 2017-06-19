@@ -6,15 +6,17 @@ using namespace std;
 
 int main() {
 //    testing matrices:
-    Matrix<int> A(2,2);
-    A = {1, 2,3, 4};
+    Matrix<int> A(4,2);
+    A = {1,1,1,1,1,1,1,1};
+    cout << A(0,1)<< endl;
+    cout << A.cols() << endl;
 
-    Matrix<int> B(2, 2);
-    B = {5, 6,7, 8};
-
-    //Matrix<int> C = B+A;
-    //cout << C;
-    //cout << A;
+    Matrix<int> B(2, 4);
+    B = {2,2,2,2,2,2,2,2};
+//
+//    Matrix<int> C = B+A;
+//    cout << C;
+//    cout << A;
 
 //    Matrix<int> D = 1 + B;
 //    cout << B;
@@ -22,8 +24,8 @@ int main() {
 
     Matrix<int> C = A * B;
     cout << C << endl;
-    B *=2;
-    cout << C << endl;
+//    B *=2;
+//    cout << C << endl;
 
 
 //    testing vectors:
