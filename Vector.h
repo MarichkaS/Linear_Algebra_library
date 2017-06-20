@@ -333,22 +333,6 @@ public:
 //        }
 //        return self;
 
-
-//        vector<thread> tp;
-//        for (int k = 0; k < NUMB_OF_THREADS-1; k++) {
-////            cout << n / NUMB_OF_THREADS*k << " " << n / NUMB_OF_THREADS*(k+1) << endl;
-//            tp.push_back(thread(worker_2, cols() / NUMB_OF_THREADS*k, cols() / NUMB_OF_THREADS*(k+1), scalar, self)); // ,
-//        }
-////        cout << n / NUMB_OF_THREADS * NUMB_OF_THREADS<< " " << endl;
-//        tp.push_back(thread(worker_2, cols()/ NUMB_OF_THREADS * NUMB_OF_THREADS, cols(), scalar, self)); // ,
-//        for (int i =0 ; i  < tp.size(); ++i){
-//            tp[i].join();
-//        }
-
-//        for (size_t i = 0; i < cols(); i++) {
-//            self(i) = self(i) * scalar;
-//        }
-//        return self;
     }
 
     Vector &operator-() {
