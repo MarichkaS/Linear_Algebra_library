@@ -201,6 +201,7 @@ public:
     void mtrx_addition(const Matrix other, int indx, int size){
         int r = indx / rows();
         int c = indx % cols();
+
         for (int i = 0; i < size; i++)
         {
             (*this)(r, c) = (*this)(r, c) + other(r, c);
@@ -211,9 +212,6 @@ public:
                 r++;
             }
         }
-//        for (size_t iter = 0; iter < rows(); iter++) {
-//            (*this)(iter, n) = (*this)(iter, n) + other(iter, n);
-//        }
     }
     Matrix& operator+=(const Matrix &other)
     {
@@ -221,19 +219,15 @@ public:
          * Parallel matrix addition (Matrix + Matrix)
          */
         std::vector<std::thread> th;
-
-        //size_t nr_threads = cols();
-//        for (size_t n = 0; n < nr_threads; ++n) {
-//            th.push_back(std::thread(&Matrix::mtrx_addition, this, other, n));
-//        }
-
         int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
+
         int j = 0;
         for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
         {
             th.push_back(std::thread(&Matrix::mtrx_addition, this, other, j, entriesPerTHread));
             j += entriesPerTHread;
         }
+
         th.push_back(std::thread(&Matrix::mtrx_addition, this, other, j,
                                  entriesPerTHread + (rows() * cols()) % NUMB_OF_THREADS));
         for (auto &t : th) {
@@ -244,9 +238,6 @@ public:
 
 
     void mtrx_subtraction(const Matrix other, int indx, int size){
-//        for (size_t iter = 0; iter < rows(); iter++) {
-//            (*this)(iter, n) = (*this)(iter, n) - other(iter, n);
-//        }
         int r = indx / rows();
         int c = indx % cols();
         for (int i = 0; i < size; i++)
@@ -269,10 +260,6 @@ public:
          */
         std::vector<std::thread> th;
 
-//        size_t nr_threads = cols();
-//        for (size_t n = 0; n < nr_threads; ++n) {
-//            th.push_back(std::thread(&Matrix::mtrx_subtraction, this, other, n));
-//        }
         int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
         int j = 0;
         for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
@@ -289,9 +276,7 @@ public:
     }
 
     void sc_addition(double scalar, int indx, int size) {
-//        for (size_t iter = 0; iter < rows(); iter++) {
-//            (*this)(iter, n) = (*this)(iter, n) + scalar;
-//        }
+
         int r = indx / rows();
         int c = indx % cols();
         for (int i = 0; i < size; i++)
@@ -312,11 +297,6 @@ public:
          * Parallel addition of scalar to matrix (Matrix + scalar)
          */
         std::vector<std::thread> th;
-//
-//        size_t nr_threads = cols();
-//        for (size_t n = 0; n < nr_threads; ++n) {
-//            th.push_back(std::thread(&Matrix::sc_addition, this, scalar, n));
-//        }
 
         int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
         int j = 0;
@@ -335,9 +315,7 @@ public:
 
 
     void sc_subtraction(double scalar, int indx, int size) {
-//        for (size_t iter = 0; iter < rows(); iter++) {
-//            (*this)(iter, n) = (*this)(iter, n) - scalar;
-//        }
+
         int r = indx / rows();
         int c = indx % cols();
         for (int i = 0; i < size; i++)
@@ -359,10 +337,6 @@ public:
          */
         std::vector<std::thread> th;
 
-//        size_t nr_threads = cols();
-//        for (size_t n = 0; n < nr_threads; ++n) {
-//            th.push_back(std::thread(&Matrix::sc_subtraction, this, scalar, n));
-//        }
         int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
         int j = 0;
         for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
@@ -379,22 +353,6 @@ public:
         return *this;
     }
 
-//    Matrix operator*(const Matrix &other) const {
-////        assert(cols == other.rows) ;
-//
-//        const Matrix &self = *this;
-//        Matrix<int> res(rows(), cols());
-//
-//        for (size_t i = 0; i < rows(); i++) {
-//            for (size_t k = 0; k < cols(); k++) {
-//                for (size_t j = 0; j < other.rows(); j++) {
-//                    res(i, k) = self(i, j) * other(j, k);
-//                }
-//            }
-//        }
-//        return res;
-//    }
-
     Matrix<T> operator*(const Matrix<T> &other)
     {
         /**
@@ -407,10 +365,6 @@ public:
         const Matrix<T> &self = *this;
         Matrix<T> res(rows(), other.cols());
         int rowsPerThread = rows() / NUMB_OF_THREADS;
-//        thread workingThreads[this->rows()];
-//        for (int i = 0; i < this->rows(); i++) {
-//            workingThreads[i] = thread(&Matrix::multthread, this, cref(other), cref(self), ref(res), i);
-//        }
 
         std::vector<std::thread> workingThreads;
         int j = 0;
@@ -440,8 +394,6 @@ public:
                 }
 
             }
-            //lock_guard<std::mutex> lock(mtx);
-            //cout <<"res: "<< res[0] << " " << res[1] << " " << res[2]<< " "<< res[3] << endl;
 
             copy(begin(res), end(res), index);
         }
@@ -449,9 +401,7 @@ public:
     }
 
     void sc_product(double scalar, int indx, int size) {
-//        for (size_t iter = 0; iter < rows(); iter++) {
-//            (*this)(iter, n) = (*this)(iter, n) * scalar;
-//        }
+
         int r = indx / rows();
         int c = indx % cols();
         for (int i = 0; i < size; i++)
@@ -474,11 +424,6 @@ public:
          */
         std::vector<std::thread> th;
 
-
-//        size_t nr_threads = cols();
-//        for (size_t n = 0; n < nr_threads; ++n) {
-//            th.push_back(std::thread(&Matrix::sc_product, this, scalar, n));
-//        }
         int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
         int j = 0;
         for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
@@ -549,18 +494,6 @@ inline Matrix<T> operator-(const T &scalar, Matrix<T> right)
 {
 //    Matrix self = -right;
     return -right+=scalar;
-
-//    for (size_t i = 0; i < rows(); i++) {
-//        for (size_t k = 0; k < cols(); k++) {
-//            for (size_t j = 0; j < other.rows(); j++) {
-//                res(i, k) = self(i, j) * other(j, k);
-//            }
-//        }
-//    }
-//    return res;
-//
-//    assert(0 && "Not implemented!");
-//    return Matrix<T>(1,1);
 }
 
 template<typename T>
@@ -573,26 +506,4 @@ inline Matrix<T> operator*(const T& scalar, Matrix<T> right) {
     return right *= scalar;
 }
 
-
-
-
-/*
-     template <class T>
-    Matrix<T> Matrix<T>::operator*(const Matrix& other) const
-    {
-        assert(cols == other.rows) ;
-        Matrix<T> temp(rows, other.cols) ;
-        for(unsigned i = 0 ; i < rows ; i++)
-        {
-            for(unsigned j = 0 ; j < other.cols ; j++)
-            {
-                temp.matrix[i][j] = 0 ;
-                for(unsigned k= 0 ; k < other.rows ; k++)
-                {
-                    temp.matrix[i][j] = temp.matrix[i][j] + (matrix[i][k]*other.matrix[k][j]) ;
-                }
-            }
-        }
-        return temp ;
- */
 #endif //LINEAR_ALGEBRA_LIBRARY_MATRIX_H
