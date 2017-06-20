@@ -313,6 +313,7 @@ public:
         for (int i = 0; i < tp.size(); ++i) {
             tp[i].join();
         }
+
         return res;
     }
 
