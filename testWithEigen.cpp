@@ -4,14 +4,31 @@
 
 #include <iostream>
 #include <Eigen/Dense>
+#include "timeMeasuring.h"
 
 using Eigen::MatrixXd;
 int main()
 {
-    MatrixXd m(2,2);
-    m(0,0) = 3;
-    m(1,0) = 2.5;
-    m(0,1) = -1;
-    m(1,1) = m(1,0) + m(0,1);
-    std::cout << m << std::endl;
+    MatrixXd A = MatrixXd::Random(1000,1000);
+    MatrixXd B = MatrixXd::Random(1000,1000);
+    auto startt = getCurrentTimeFenced();
+
+    MatrixXd C = B+A;
+    auto end1 = getCurrentTimeFenced();
+
+    C = A / 456;
+    auto end2 = getCurrentTimeFenced();
+
+    C = A * B;
+    auto end3 = getCurrentTimeFenced();
+
+    C = A * 456;
+    auto end4 = getCurrentTimeFenced();
+
+    cout << toMicroSec(end1 - startt) << endl;
+    cout << toMicroSec(end2 - end1) << endl;
+    cout << toMicroSec(end3 - end2) << endl;
+    cout << toMicroSec(end4 - end3) << endl;
+    //cout << C << endl;
+
 }

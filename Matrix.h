@@ -104,6 +104,15 @@ public:
         return *this;
     }
 
+    Matrix& fromVector(std::vector<T> vc)
+    {
+        for (auto i = begin(vc); i != end(vc); i++)
+        {
+            matr_data.data[i - begin(vc)] = *i;
+        }
+        return *this;
+    }
+
     size_t rows() const {
         return matr_data.rows;
     }
