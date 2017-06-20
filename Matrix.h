@@ -10,7 +10,7 @@
 #include <thread>
 #include <mutex>
 #include <vector>
-#define NUMB_OF_THREADS 10
+#define NUMB_OF_THREADS 5
 
 using namespace std;
 //mutex mtx;
@@ -70,20 +70,6 @@ private:
 public:
 
     Matrix(size_t r, size_t c) : matr_data(r, c) {}
-#if 0
-    Matrix<T>(const Matrix<T> &obj)
-    : matr_data(obj.cols(), obj.rows())
-    {
-        cout << "blabla" << endl;
-//        std::cout << (sizeof(arr) / sizeof(arr[0])) << std::endl;
-//        if ((sizeof(arr) / sizeof(arr[0]) ) > matr_data.rows * matr_data.cols) //TODO:FIX
-//        {
-//            throw std::out_of_range("Too big arr to initialize matrix with");
-//        }
-//        std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), arr);
-        //this->matr_data = obj.matr_data;
-    }
-#endif
     // square matrix only
     Matrix(std::initializer_list<T> ilst) : matr_data(std::sqrt(ilst.size()), std::sqrt(ilst.size()))
     {
@@ -106,7 +92,15 @@ public:
         {
             matr_data.data[i - begin(ilst)] = *i;
         }
-        //std::copy(matr_data.data, matr_data.data + (matr_data.rows * matr_data.cols), begin(ilst));
+        return *this;
+    }
+
+    Matrix& fromVector(std::vector<T> vc)
+    {
+        for (auto i = begin(vc); i != end(vc); i++)
+        {
+            matr_data.data[i - begin(vc)] = *i;
+        }
         return *this;
     }
 
@@ -122,17 +116,8 @@ public:
     {
         return matr_data.data;
     }
-#if 0  // Terribly wrong!
-    void resize(size_t rows, size_t cols) {
-        matr_data.rows = rows;
-        matr_data.cols = cols;
-    }
-#endif
 
     inline T& operator()(size_t i, size_t j) {
-//        if (i >= matr_data.rows || j >= matr_data.cols) {
-//            throw std::out_of_range ("Matrix indexes out of range");
-//        }
 
         if (i >= rows())
         {
@@ -147,9 +132,6 @@ public:
     }
 
     inline const T& operator()(size_t i, size_t j) const {
-//        if (i >= matr_data.rows || j >= matr_data.cols) {
-//            throw std::out_of_range ("Matrix indexes out of range");
-//        }
 
         if (i >= rows())
         {
@@ -201,7 +183,6 @@ public:
     void mtrx_addition(const Matrix other, int indx, int size){
         int r = indx / rows();
         int c = indx % cols();
-
         for (int i = 0; i < size; i++)
         {
             (*this)(r, c) = (*this)(r, c) + other(r, c);
@@ -212,6 +193,7 @@ public:
                 r++;
             }
         }
+
     }
     Matrix& operator+=(const Matrix &other)
     {
@@ -219,15 +201,15 @@ public:
          * Parallel matrix addition (Matrix + Matrix)
          */
         std::vector<std::thread> th;
-        int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
 
+
+        int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
         int j = 0;
         for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
         {
             th.push_back(std::thread(&Matrix::mtrx_addition, this, other, j, entriesPerTHread));
             j += entriesPerTHread;
         }
-
         th.push_back(std::thread(&Matrix::mtrx_addition, this, other, j,
                                  entriesPerTHread + (rows() * cols()) % NUMB_OF_THREADS));
         for (auto &t : th) {
@@ -238,6 +220,7 @@ public:
 
 
     void mtrx_subtraction(const Matrix other, int indx, int size){
+
         int r = indx / rows();
         int c = indx % cols();
         for (int i = 0; i < size; i++)
@@ -337,6 +320,7 @@ public:
          */
         std::vector<std::thread> th;
 
+
         int entriesPerTHread = (rows() * cols()) / NUMB_OF_THREADS;
         int j = 0;
         for(int i = 0; i < NUMB_OF_THREADS - 1; i++)
@@ -352,6 +336,7 @@ public:
         }
         return *this;
     }
+
 
     Matrix<T> operator*(const Matrix<T> &other)
     {
@@ -392,12 +377,9 @@ public:
                 for (int i = 0; i < other.rows(); i++) {
                     res[j] += self(indxofrow + k, i) * other(i, j);
                 }
-
             }
-
             copy(begin(res), end(res), index);
         }
-
     }
 
     void sc_product(double scalar, int indx, int size) {
@@ -492,7 +474,6 @@ inline Matrix<T> operator-(Matrix<T> left, const T &scalar)
 template<typename T>
 inline Matrix<T> operator-(const T &scalar, Matrix<T> right)
 {
-//    Matrix self = -right;
     return -right+=scalar;
 }
 
@@ -505,5 +486,4 @@ template<typename T>
 inline Matrix<T> operator*(const T& scalar, Matrix<T> right) {
     return right *= scalar;
 }
-
 #endif //LINEAR_ALGEBRA_LIBRARY_MATRIX_H
